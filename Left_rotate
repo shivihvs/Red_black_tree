@@ -1,0 +1,24 @@
+void left_rotate(struct node *y)
+{
+	struct node *x=y->right;
+	y->right=x->left;
+	if(x->left!=NULL)
+	{
+		x->left->parent=y;
+	}
+	x->parent=y->parent;
+	if(y->parent==NULL)
+	{
+		root=x;
+	}
+	else if(y==y->parent->left)
+	{
+		y->parent->left=x;
+	}
+	else
+	{
+		y->parent->right=x;
+	}
+x->left=y;
+y->parent=x;
+}
