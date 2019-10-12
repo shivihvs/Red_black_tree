@@ -1,0 +1,8 @@
+void in_order(struct node *root)
+{
+	if(root==NULL)
+	  return;
+	in_order(root->left);
+	printf("%d : %d ",root->data,root->color);
+	in_order(root->right);
+}
