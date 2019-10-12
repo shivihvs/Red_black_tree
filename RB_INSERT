@@ -1,1 +1,230 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+	int data;
+	int color;
+	struct node *left,*right,*parent;
+};
+struct node *root=NULL;
+void left_rotate(struct node *y)
+{
+	struct node *x=y->right;
+	y->right=x->left;
+	if(x->left!=NULL)
+	{
+		x->left->parent=y;
+	}
+	x->parent=y->parent;
+	if(y->parent==NULL)
+	{
+		root=x;
+	}
+	else if(y==y->parent->left)
+	{
+		y->parent->left=x;
+	}
+	else
+	{
+		y->parent->right=x;
+	}
+x->left=y;
+y->parent=x;
+}
+void right_rotate(struct node *x)
+{
+	struct node *y=x->left;
+	x->left=y->right;
+	if(y->right!=NULL)
+	{
+		y->right->parent=x;
+	}
+	y->parent=x->parent;
+	if(x->parent==NULL)
+	{
+		root=y;
+	}
+	else if(x==x->parent->left)
+	{
+		x->parent->left=y;
+	}
+	else
+	{
+		x->parent->right=y;
+	}
+y->right=x;
+x->parent=y;
+}
+void fix_up(struct node*z)
+{
+	while(z->parent!=NULL && z->parent->color==0)
+	{
+	   if(z->parent==z->parent->parent->left)
+	   {
+	   	struct node*y=z->parent->parent->right;
+	   	if(y!=NULL&&y->color==0)
+	   	{
+	   		y->color=1;
+	   		z->parent->color=1;
+	   		z->parent->parent->color=0;
+	   		z=z->parent->parent;
+	   	
+		   }
+		   else
+		   {
+		   	if(z==z->parent->left)
+		   	{
+		   		struct node*p,*q;
+		   		p=z->parent;
+		   		q=z->parent->parent;
+		   		q->color=0;
+		   		p->color=1;
+		   		right_rotate(q);
+		   		
+		   		
+		   		
+			   }
+			   else
+			   {
+			   	struct node*p,*q;
+		   		p=z->parent;
+		   		q=z->parent->parent;
+		   		left_rotate(p);
+		   		right_rotate(q);
+		   		z->color=1;
+		   		q->color=0;
+			   }
+		   }
+	    }
+	   	else
+	   {
+	   	struct node*y=z->parent->parent->left;
+	   	if(y!=NULL&&y->color==0)
+	   	{
+	   		y->color=1;
+	   		z->parent->color=1;
+	   		z->parent->parent->color=0;
+	   		z=z->parent->parent;
+	   	
+		   }
+		   else
+		   {
+		   	if(z==z->parent->right)
+		   	{
+		   		struct node*p,*q;
+		   		p=z->parent;
+		   		q=z->parent->parent;
+		   		q->color=0;
+		   		p->color=1;
+		   		left_rotate(q);
+		   		
+		   		
+		   		
+			   }
+			   else
+			   {
+			   	struct node*p,*q;
+		   		p=z->parent;
+		   		q=z->parent->parent;
+		   		right_rotate(p);
+		   		left_rotate(q);
+		   		z->color=1;
+		   		q->color=0;
+			   }
+		   }
+   }
+}
+root->color=1;	
+}
+void bst_insert(int data)
+   {
+	if(root==NULL)
+	{
+	 	struct node*temp=(struct node*)malloc(sizeof(struct node));
+	 	temp->data=data;
+	 	temp->left=NULL;
+	 	temp->right=NULL;
+	 	temp->parent=NULL;
+	 	temp->color=1;
+	 	root=temp;
+	 	return;
+	}
+		struct node*temp=(struct node*)malloc(sizeof(struct node));
+		struct node*p=NULL;
+		struct node*q=root;
+		while(q!=NULL)
+		{
+			if(q->data>data)
+			{
+				p=q;
+				q=q->left;
+			}
+			else
+			{
+				p=q;
+				q=q->right;
+			}
+		}
+		temp->data=data;
+		temp->left=NULL;
+		temp->right=NULL;
+		temp->parent=p;
+		temp->color=0;
+		if(p->data>temp->data)
+		{
+			p->left=temp;
+		}
+		else
+		{
+			p->right=temp;
+		}
+		temp->parent=p;
+		fix_up(temp);
+		
+		
+}
 
+void in_order(struct node *root)
+{
+	if(root==NULL)
+	  return;
+	in_order(root->left);
+	printf("%d : %d ",root->data,root->color);
+	in_order(root->right);
+}
+main()
+{
+	int c,data;
+
+	while(1)
+	{
+			printf("enter your choice:");
+	       scanf("%d",&c);
+		switch(c)
+		{
+		
+		case 1:
+			{
+			
+			printf("insertion:\n");
+			printf("enter the node to be inserted:\n");
+			scanf("%d",&data);
+			bst_insert(data);
+			break;
+		}
+		case 2:
+			{
+			
+			printf("traversal:\n");
+			in_order(root);
+			break;
+		}
+		case 3:
+			{
+				printf("successful execution of rogram:");
+				exit(0);
+			}
+	}
+			
+	}
+}
