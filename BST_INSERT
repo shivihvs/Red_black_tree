@@ -1,0 +1,47 @@
+void bst_insert(int data)
+   {
+	if(root==NULL)
+	{
+	 	struct node*temp=(struct node*)malloc(sizeof(struct node));
+	 	temp->data=data;
+	 	temp->left=NULL;
+	 	temp->right=NULL;
+	 	temp->parent=NULL;
+	 	temp->color=1;
+	 	root=temp;
+	 	return;
+	}
+		struct node*temp=(struct node*)malloc(sizeof(struct node));
+		struct node*p=NULL;
+		struct node*q=root;
+		while(q!=NULL)
+		{
+			if(q->data>data)
+			{
+				p=q;
+				q=q->left;
+			}
+			else
+			{
+				p=q;
+				q=q->right;
+			}
+		}
+		temp->data=data;
+		temp->left=NULL;
+		temp->right=NULL;
+		temp->parent=p;
+		temp->color=0;
+		if(p->data>temp->data)
+		{
+			p->left=temp;
+		}
+		else
+		{
+			p->right=temp;
+		}
+		temp->parent=p;
+		fix_up(temp);
+		
+		
+}
